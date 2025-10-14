@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import clienteRoutes from './routes/clienteRoutes';
 
 const app = express();
@@ -8,11 +8,11 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Define um prefixo para todas as rotas de clientes
-app.use('/api', clienteRoutes);
+app.use('/', clienteRoutes);
 
 // Rota raiz simples para verificar se o servidor está no ar
-app.get('/', (req, res) => {
-  res.send('API de Milhas da Reino Educação está no ar!');
+app.get('/health', (req, res) => {
+  res.send('Tudo funcionando até agora!');
 });
 
 app.listen(PORT, () => {

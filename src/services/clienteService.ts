@@ -18,7 +18,10 @@ class ClienteService {
         return ClienteService.instance;
     }
 
-    getAll(): Cliente[] {
+    getAll(): Cliente[] | string {
+        if (this.clientes.length === 0) {
+            return "Nenhum cliente cadastrado ainda.";
+        }
         return this.clientes;
     }
 
