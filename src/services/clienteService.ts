@@ -1,8 +1,9 @@
 import { Cliente } from "../models/Cliente";
+import type { ClienteSchema } from "../utils/clienteValidator";
 
 type CriarClienteProps = Omit<ConstructorParameters<typeof Cliente>[0], 'id'>;
 
-type AtualizarClienteProps = Partial<CriarClienteProps>;
+type AtualizarClienteProps = Partial<ClienteSchema>;
 
 class ClienteService {
     private static instance: ClienteService;
@@ -29,7 +30,15 @@ class ClienteService {
         return this.clientes.find(c => c.id === id);
     }
 
-    create(data: CriarClienteProps): Cliente {
+    getByEmail(email: string): Cliente | undefined {
+        return this.clientes.find(c => c.email === email);
+    }
+
+    create(data: CriarClienteProps): Cliente | { erro: string } {
+        if (this.getByEmail(data.email)) {
+            return { erro: 'Este e-mail já está em uso.' };
+        }
+
         const novoCliente = new Cliente({
             id: this.proximoId,
             ...data,
@@ -39,11 +48,19 @@ class ClienteService {
         return novoCliente;
     }
 
-    update(id: number, data: AtualizarClienteProps): Cliente | null {
+    update(id: number, data: AtualizarClienteProps): Cliente | null | { erro: string } {
         const cliente = this.getById(id);
         if (!cliente) {
             return null;
         }
+
+        if (data.email && data.email !== cliente.email) {
+            const emailExistente = this.getByEmail(data.email);
+            if (emailExistente && emailExistente.id !== id) {
+                return { erro: 'Este e-mail já está em uso.' };
+            }
+        }
+
         cliente.atualizarDados(data);
         return cliente;
     }

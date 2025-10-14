@@ -18,25 +18,42 @@ export const obterClientePorId = (req: Request, res: Response) => {
     res.json(cliente);
 }
 
+import { atualizarClienteSchema, clienteSchema } from '../utils/clienteValidator';
+
 export const adicionarCliente = (req: Request, res: Response) => {
-    const { saldo_milhas, ...rest } = req.body;
-    const novoCliente = clienteService.create({
-        ...rest,
-        saldo_milhas: parseInt(saldo_milhas, 10)
-    });
+    const result = clienteSchema.safeParse(req.body);
+
+    if (!result.success) {
+        return res.status(400).json({ erros: result.error.flatten().fieldErrors });
+    }
+
+    const novoCliente = clienteService.create(result.data);
+
+    if ('erro' in novoCliente) {
+        return res.status(409).json(novoCliente);
+    }
+
     res.status(201).json(novoCliente);
 }
 
 export const atualizarCliente = (req: Request, res: Response) => {
-     const id = parseInt(req.params.id!, 10);
+    const id = parseInt(req.params.id!, 10);
     if (!id) {
         return res.status(400).json({ message: 'ID do cliente não fornecido' });
     }
-   const { saldo_milhas, ...rest } = req.body;
-   const clienteAtualizado = clienteService.update(id, {
-        ...rest,
-        saldo_milhas: parseInt(saldo_milhas, 10)
-   });
+
+    const result = atualizarClienteSchema.safeParse(req.body);
+
+    if (!result.success) {
+        return res.status(400).json({ erros: result.error.flatten().fieldErrors });
+    }
+
+    const clienteAtualizado = clienteService.update(id, result.data);
+
+    if (clienteAtualizado && 'erro' in clienteAtualizado) {
+        return res.status(409).json(clienteAtualizado);
+    }
+
     if (!clienteAtualizado) {
         return res.status(404).json({ message: 'Cliente não encontrado' });
     }
