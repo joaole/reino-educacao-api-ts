@@ -33,6 +33,17 @@ export class Cliente {
         this.saldo_milhas = this.saldo_milhas + quantidade;
     }
 
+    public retirarMilhas(quantidade: number): boolean {
+        if (quantidade <= 0) {
+            throw new Error("A quantidade de milhas a ser retirada deve ser maior que zero.");
+        }
+        if (this.saldo_milhas < quantidade) {
+            return false;
+        }
+        this.saldo_milhas = this.saldo_milhas - quantidade;
+        return true;
+    }
+
     public atualizarDados(dados: Partial<Omit<ClienteProps, 'id'>>): void {
         Object.assign(this, dados);
     }

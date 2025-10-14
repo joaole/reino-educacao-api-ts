@@ -82,3 +82,23 @@ export const adicionarMilhas = (req: Request, res: Response) => {
   
   res.json(cliente);
 };
+
+export const retirarMilhas = (req: Request, res: Response) => {
+  const id = parseInt(req.params.id!, 10);
+  if (!id) return res.status(400).json({ message: 'ID do cliente não fornecido' });
+
+  const quantidade = parseInt(req.body.quantidade, 10);
+  if (isNaN(quantidade) || quantidade <= 0) {
+    return res.status(400).json({ message: 'Quantidade de milhas inválida.' });
+  }
+
+  const cliente = clienteService.getById(id);
+  if (!cliente) return res.status(404).json({ message: 'Cliente não encontrado' });
+
+  const sucesso = cliente.retirarMilhas(quantidade);
+  if (!sucesso) {
+    return res.status(400).json({ message: 'Saldo de milhas insuficiente.' });
+  }
+
+  res.json(cliente);
+};

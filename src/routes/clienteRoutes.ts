@@ -12,5 +12,6 @@ router.put('/clientes/:id', clienteController.atualizarCliente);
 router.delete('/clientes/:id', clienteController.removerCliente);
 
 router.post('/clientes/:id/adicionar-milhas', clienteController.adicionarMilhas);
+router.post('/clientes/:id/retirar-milhas', clienteController.retirarMilhas);
 
 export default router;
