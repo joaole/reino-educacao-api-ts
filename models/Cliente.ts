@@ -1,7 +1,7 @@
 type CartaoTipo = "Gold" | "Platinum" | "Black" | "Infinite";
 
 interface ClienteProps {
-    id: string;
+    id: number;
     nome: string;
     email: string;
     cartao: CartaoTipo;
@@ -10,7 +10,7 @@ interface ClienteProps {
 }
 
 export class Cliente {
-    id: string;
+    id: number;
     nome: string
     email: string;
     cartao: CartaoTipo

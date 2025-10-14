@@ -22,13 +22,13 @@ class ClienteService {
         return this.clientes;
     }
 
-    getById(id: string): Cliente | undefined {
+    getById(id: number): Cliente | undefined {
         return this.clientes.find(c => c.id === id);
     }
 
     create(data: CriarClienteProps): Cliente {
         const novoCliente = new Cliente({
-            id: this.proximoId.toString(),
+            id: this.proximoId,
             ...data,
         });
         this.clientes.push(novoCliente);
@@ -36,7 +36,7 @@ class ClienteService {
         return novoCliente;
     }
 
-    update(id: string, data: AtualizarClienteProps): Cliente | null {
+    update(id: number, data: AtualizarClienteProps): Cliente | null {
         const cliente = this.getById(id);
         if (!cliente) {
             return null;
@@ -45,7 +45,7 @@ class ClienteService {
         return cliente;
     }
 
-    delete(id: string): boolean {
+    delete(id: number): boolean {
         const index = this.clientes.findIndex(c => c.id === id);
         if (index === -1) {
             return false;

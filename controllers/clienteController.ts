@@ -1,13 +1,13 @@
 import type { Request, Response } from 'express';
 import { clienteService } from '../services/clienteService';
 
-export const ListarClientes = (req: Request, res: Response) => {
+export const listarClientes = (req: Request, res: Response) => {
     const clientes = clienteService.getAll();
     res.json(clientes);
 };
 
-export const ObterClientePorId = (req: Request, res: Response) => {
-    const { id } = req.params;
+export const obterClientePorId = (req: Request, res: Response) => {
+    const id = parseInt(req.params.id!, 10);
     if (!id) {
         return res.status(400).json({ message: 'ID do cliente não fornecido' });
     }
@@ -24,7 +24,7 @@ export const adicionarCliente = (req: Request, res: Response) => {
 }
 
 export const atualizarCliente = (req: Request, res: Response) => {
-    const { id } = req.params;
+     const id = parseInt(req.params.id!, 10);
     if (!id) {
         return res.status(400).json({ message: 'ID do cliente não fornecido' });
     }
@@ -36,7 +36,7 @@ export const atualizarCliente = (req: Request, res: Response) => {
 };
 
 export const removerCliente = (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = parseInt(req.params.id!, 10);
     if (!id) {
         return res.status(400).json({ message: 'ID do cliente não fornecido' });
     }
@@ -48,10 +48,10 @@ export const removerCliente = (req: Request, res: Response) => {
 };
 
 export const adicionarMilhas = (req: Request, res: Response) => {
-  const { id } = req.params;
-  if (!id) {
-    return res.status(400).json({ message: 'ID do cliente não fornecido' });
-  }
+   const id = parseInt(req.params.id!, 10);
+    if (!id) {
+        return res.status(400).json({ message: 'ID do cliente não fornecido' });
+    }
   const { quantidade } = req.body;
 
   if (typeof quantidade !== 'number' || quantidade <= 0) {
