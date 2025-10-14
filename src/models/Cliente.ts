@@ -30,7 +30,7 @@ export class Cliente {
         if (quantidade <= 0) {
             throw new Error("A quantidade de milhas a ser adicionada deve ser maior que zero.");
         }
-        this.saldo_milhas += quantidade;
+        this.saldo_milhas = this.saldo_milhas + quantidade;
     }
 
     public atualizarDados(dados: Partial<Omit<ClienteProps, 'id'>>): void {
